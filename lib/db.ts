@@ -1,8 +1,10 @@
-// In this file we are connecting to the mongodb only one time using the same connection because our code can run many times and if you connect to the mongodb again and again it may slow down the performance and our app may crash.
-
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI!;
+
+if (!MONGODB_URI) {
+  throw new Error('Please define mongodb URI in env file.');
+}
 
 let cached = global.mongoose;
 
@@ -10,17 +12,25 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function dbConnect() {
+export async function connectToDatabase() {
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI);
+    const opts = {
+      bufferCommands: true,
+      maxPoolSize: 10,
+    };
+
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then(() => mongoose.connection);
   }
 
-  cached.conn = await cached.promise;
+  try {
+    cached.conn = await cached.promise;
+  } catch (error) {
+    cached.promise = null;
+    throw new Error('Check Database File');
+  }
   return cached.conn;
 }
-
-export default dbConnect();
