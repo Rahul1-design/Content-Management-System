@@ -19,7 +19,7 @@ export default function NewPost() {
     const [error, setError] = useState("")
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.value]: e.target.value })
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -74,7 +74,7 @@ export default function NewPost() {
 
                 <div>
                     <label className="block mb-2">Category</label>
-                    <input type="text" title="Category" value={formData.category} onChange={handleChange} className="w-full border p-2 rounded" />
+                    <input type="text" name="category" title="Category" value={formData.category} onChange={handleChange} className="w-full border p-2 rounded" />
                 </div>
 
                 <div>
