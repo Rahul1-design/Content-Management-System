@@ -20,6 +20,7 @@ export default function NewPost() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        console.log({ [e.target.name]: e.target.value })
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -69,7 +70,7 @@ export default function NewPost() {
 
                 <div>
                     <label className="block mb-2">Content</label>
-                    <textarea title="content" value={formData.content} onChange={handleChange} className="w-full border p-2 rounded h-64" required />
+                    <textarea title="content" name="content" value={formData.content} onChange={handleChange} className="w-full border p-2 rounded h-64" required />
                 </div>
 
                 <div>

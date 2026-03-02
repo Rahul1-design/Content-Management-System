@@ -1,19 +1,26 @@
 "use client"
 
 import { signIn } from "next-auth/react"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 
 export default function SignIn() {
     const router = useRouter();
     const [formData, setFormData] = useState({ email: '', password: '' })
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [showPassword, setshowPassword] = useState(false)
 
+
+    const showpass = (e: FormEvent) => {
+        setshowPassword(item => !item)
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        console.log({ [e.target.name]: e.target.value })
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -59,13 +66,20 @@ export default function SignIn() {
                     </div>
                     <div>
                         <label className="block text-sm font-medium mb-2">Password</label>
-                        <input type="password" title="Password" name="password" onChange={handleChange} value={formData.password} className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                        <div className=" flex w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+
+                            <input type={showPassword ? "text" : 'password'} title="Password" name="password" onChange={handleChange} value={formData.password} className="flex-1 outline-0" />
+
+                            <button className="cursor-pointer" onClick={showpass} title="button" type="button"  >
+                                <Image src={showPassword ? "/openeye.png" : "/eye-password-hide.svg"} alt="Eye Image" width={20} height={20} />
+                            </button>
+                        </div>
                     </div>
 
-                    <button type="submit" title="Submit" disabled={loading} className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition">{loading ? 'Signing in....' : 'Sign In'}</button>
+                    <button type="submit" title="Submit" disabled={loading} className="w-full cursor-pointer bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition">{loading ? 'Signing in....' : 'Sign In'}</button>
                 </form>
 
-                <p className="mt-6 text-center text-sm text-gray-600">{`Don't have an account?`} <Link href="/auth/signup" className="text-blue-600 hover:underline">Sign Up</Link></p>
+                <p className="mt-6 text-center text-sm text-gray-600">{`Don't have an account?`} <Link href="/auth/signup" className="text-blue-600 hover:underline cursor-pointer">Sign Up</Link></p>
             </div>
         </div>
     )
