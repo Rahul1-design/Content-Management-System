@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import Providers from "./providers";
+import { checkIsRoutePPREnabled } from "next/dist/server/lib/experimental/ppr";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,16 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <nav className="bg-gray-800 text-white p-4">
-          <div className="max-w-6xl mx-auto flex gap-6">
-            <Link href="/">Home</Link>
-            <Link href="/posts">Posts</Link>
-            <Link href="/admin">Admin</Link>
-          </div>
-        </nav>
-        <main className="min-h-screen">
-          {children}
-        </main>
+        <Providers>
+
+          <main className="min-h-screen">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
