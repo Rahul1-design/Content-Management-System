@@ -37,7 +37,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const body = await request.json();
     const updatedPost = await Post.findByIdAndUpdate(params.id, body, { new: true });
 
-    return Response.json({ success: true, post }, { status: 201 });
+    return Response.json({ success: true, post: updatedPost }, { status: 201 });
   } catch (error) {
     return Response.json({ success: false }, { status: 500 });
   }
