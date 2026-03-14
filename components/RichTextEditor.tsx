@@ -67,7 +67,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
     const addImage = () => {
         const url = window.prompt("Enter Image URL:-");
         if (url) {
-            editor.chain().focus().setImage({ src: 'url' }).run()
+            editor.chain().focus().setImage({ src: url }).run()
         }
     }
 
@@ -131,11 +131,13 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
                     <Redo className="w-4 h-4" />
                 </MenuButton>
 
-
-                {/* Editor */}
-                <EditorContent editor={editor} />
-
             </div>
+
+            {/* Editor */}
+            <div className="p-4">
+                <EditorContent editor={editor} />
+            </div>
+
         </div>
     )
 }
