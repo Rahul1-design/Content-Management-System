@@ -3,7 +3,7 @@
 import Image from "@tiptap/extension-image"
 import Link from "@tiptap/extension-link"
 import Placeholder from "@tiptap/extension-placeholder"
-import { useEditor } from "@tiptap/react"
+import { EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import React from "react"
 import {
@@ -26,6 +26,7 @@ const MenuButton = ({ onClick, active, children }: {
 
 export default function RichTextEditor({ content, onChange }: RichTextEditorProps) {
     const editor = useEditor({
+        immediatelyRender: false,
         extensions: [
             StarterKit,
             Link.configure({
@@ -73,9 +74,9 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
 
 
     return (
-        <div className="border border-gray-300 rounded-lg overflow-hidden">
+        <div className=" border border-gray-300 rounded-lg overflow-hidden">
             {/* Toolbar */}
-            <div className="bg-gray-100 border-b border-gray-300 p-2 flex flex-wrap gap-1">
+            <div className=" bg-gray-100 border-b border-gray-300 p-2 flex flex-wrap gap-1">
                 <MenuButton onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")} >
                     <Bold className="w-4 h-4" />
                 </MenuButton>
@@ -120,7 +121,19 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
                     <ImageIcon className="w-4 h-4" />
                 </MenuButton>
 
+                <div className="w-px bg-gray-300 mx-1" />
 
+                <MenuButton onClick={() => editor.chain().focus().undo().run()}>
+                    <Undo className="w-4 h-4" />
+                </MenuButton>
+
+                <MenuButton onClick={() => editor.chain().focus().redo().run()}>
+                    <Redo className="w-4 h-4" />
+                </MenuButton>
+
+
+                {/* Editor */}
+                <EditorContent editor={editor} />
 
             </div>
         </div>
