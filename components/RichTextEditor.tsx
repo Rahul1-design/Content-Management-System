@@ -134,10 +134,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
             </div>
 
             {/* Editor */}
-            <div className="p-4">
-                <EditorContent editor={editor} />
-            </div>
-
+            <EditorContent editor={editor} />
         </div>
     )
 }

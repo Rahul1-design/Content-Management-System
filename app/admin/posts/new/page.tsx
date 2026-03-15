@@ -1,9 +1,9 @@
 "use client"
 
+import RichTextEditor from "@/components/RichTextEditor"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-
 
 type statusType = "draft" | "published"
 
@@ -38,7 +38,7 @@ export default function NewPost() {
             setLoading(true)
             setError("")
 
-            const res = await fetch("api/posts", {
+            const res = await fetch("/modelsapi/posts", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -53,7 +53,7 @@ export default function NewPost() {
                 throw new Error(data.error || "Failed to create post");
             }
 
-            router.push('/admin/dahsboard')
+            router.push('/admin/dashboard')
             router.refresh()
         } catch (error) {
             setError("Something went wrong. Please try again.")
@@ -66,7 +66,7 @@ export default function NewPost() {
     if (!session) return <div className="text-4xl text-red-600 font-bold">Unauthorized</div>
 
     return (
-        <div className="max-w-4xl mx-auto p-8">
+        <div className="max-w-5xl mx-auto p-8">
             <h1 className="text-3xl font-bold mb-8">Create New Post</h1>
 
             {error && <p className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</p>}
@@ -84,7 +84,7 @@ export default function NewPost() {
 
                 <div>
                     <label className="block text-sm font-medium mb-2">Content</label>
-                    <textarea title="content" name="content" value={formData.content} onChange={handleChange} className="w-full border border-gray-300 p-3 rounded-lg h-96 focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm" required disabled={loading} placeholder="Write your content here..." />
+                    <RichTextEditor content={formData.content} onChange={(content) => setFormData((prev) => ({ ...prev, content }))} />
                 </div>
 
                 <div className="grid grid-cols gap-6">
