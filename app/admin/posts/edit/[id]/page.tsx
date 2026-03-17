@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
+import RichTextEditor from "@/components/RichTextEditor"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -37,7 +38,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
             const res = await fetch(`/api/posts/${params.id}`)
             const data = await res.json();
 
-            if (data.sucess) {
+            if (data.success) {
                 const post = data.post;
                 setFormData({
                     title: post.title,
@@ -63,7 +64,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
         try {
             const res = await fetch(`/api/posts/${params.id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'applicaton/json' },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...formData, tags: formData.tags.split(',').map(e => e.trim()).filter(Boolean) })
             })
 
@@ -79,7 +80,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
         } catch (error: any) {
             setError(error.message)
         } finally {
-            setLoading(false)
+            setSaving(false)
         }
     }
 
@@ -135,7 +136,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
 
                 <div>
                     <label className="block text-sm font-medium mb-2">Content</label>
-                    <textarea title="Content" name="content" value={formData.content} onChange={handleChange} required disabled={saving} className="w-full border border-gray-300 p-3 rounded-lg h-96 focus:ring-2 focus:ring-blue-500 font-mono text-sm" ></textarea>
+                    <RichTextEditor content={formData.content} onChange={(content) => setFormData((prev) => ({ ...prev, content }))} />
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
