@@ -10,6 +10,7 @@ export interface IPost extends Document {
   tags: string[];
   status: 'draft' | 'published';
   createdAt: Date;
+  coverImage: string;
 }
 
 const PostSchema: Schema<IPost> = new Schema({
@@ -22,6 +23,7 @@ const PostSchema: Schema<IPost> = new Schema({
   tags: [String],
   status: { type: String, enum: ['draft', 'published'], default: 'draft' },
   createdAt: { type: Date, default: Date.now },
+  coverImage: { type: String },
 });
 
 export default mongoose.models.Post || mongoose.model<IPost>('Post', PostSchema);
