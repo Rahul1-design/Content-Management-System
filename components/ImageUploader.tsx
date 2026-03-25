@@ -8,7 +8,7 @@ export interface ImageUploaderProps {
     currentImage?: string
 }
 
-export default function ImageUploader({ onUpload, currentImage }) {
+export default function ImageUploader({ onUpload, currentImage }: ImageUploaderProps) {
     const [uploading, setUploading] = useState(false)
     const [preview, setPreview] = useState<string | null>(currentImage || null)
 
