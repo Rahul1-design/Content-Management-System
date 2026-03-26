@@ -10,7 +10,7 @@ export interface IPost extends Document {
   tags: string[];
   status: 'draft' | 'published';
   createdAt: Date;
-  coverImage: string;
+  coverImage?: string;
 }
 
 const PostSchema: Schema<IPost> = new Schema({

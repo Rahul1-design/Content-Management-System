@@ -1,5 +1,6 @@
 "use client"
 
+import ImageUploader from "@/components/ImageUploader"
 import RichTextEditor from "@/components/RichTextEditor"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
@@ -14,6 +15,7 @@ export default function NewPost() {
         title: '',
         content: '',
         excerpt: '',
+        coverImage: '',
         category: '',
         tags: '',
         status: 'draft' as statusType
@@ -38,7 +40,7 @@ export default function NewPost() {
             setLoading(true)
             setError("")
 
-            const res = await fetch("/modelsapi/posts", {
+            const res = await fetch("/api/posts", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -76,7 +78,10 @@ export default function NewPost() {
                     <label className="block text-sm font-medium mb-2">Title</label>
                     <input type="text" name="title" value={formData.title} onChange={handleChange} className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" title="title" required disabled={loading} />
                 </div>
-
+                <div>
+                    <label className="block text-sm font-medium mb-2">Cover Image</label>
+                    <ImageUploader currentImage={formData.coverImage} onUpload={(url) => setFormData({ ...formData, coverImage: url })} />
+                </div>
                 <div>
                     <label className="block text-sm font-medium mb-2">Excerpt</label>
                     <input name="excerpt" type="text" title="excerpt" className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" value={formData.excerpt} placeholder="Brief decription (optional)" onChange={handleChange} disabled={loading} />
