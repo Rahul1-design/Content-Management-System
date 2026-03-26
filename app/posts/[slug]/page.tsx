@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 async function getPost(slug: string) {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?slug=${slug}`, { cache: 'no-store' })
@@ -30,6 +32,14 @@ export default async function PostPage({ params }: { params: { slug: string } })
     return (
         <article className="max-w-4xl mx-auto p-8">
 
+            {/* Cover Image */}
+            {post.coverImage && (
+                <div className="mb-8 -mx-8">
+                    <Image src={post.coverImage} alt="post.title" className="w-full h-96 object-cover" />
+                </div>
+            )}
+
+            {/* Header */}
             <header>
                 <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
                 <div className="flex items-center gap-4 text-gray-600 mb-4">
