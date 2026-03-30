@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { notFound } from "next/navigation";
 
 async function getPost(slug: string) {
     try {
@@ -20,6 +20,11 @@ async function getPost(slug: string) {
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
     const post = await getPost(params.slug)
+
+    if (!post) {
+        notFound();
+    }
+
     const formattedDate = new Date(post.createdAt)
         .toLocaleDateString('en-US', {
             year: 'numeric',
@@ -27,7 +32,6 @@ export default async function PostPage({ params }: { params: { slug: string } })
             day: 'numeric'
         })
 
-    if (!post) return <div className="text-red-700 font-semibold text-4xl ">Post not found</div>
 
     return (
         <article className="max-w-4xl mx-auto p-8">
@@ -35,7 +39,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             {/* Cover Image */}
             {post.coverImage && (
                 <div className="mb-8 -mx-8">
-                    <Image src={post.coverImage} alt="post.title" className="w-full h-96 object-cover" />
+                    <img src={post.coverImage} alt="post.title" className="w-full h-96 object-cover" />
                 </div>
             )}
 

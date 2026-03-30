@@ -1,7 +1,6 @@
 "use client"
 
 import { Search } from "lucide-react"
-import Image from "next/image";
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
@@ -87,7 +86,7 @@ export default function PostPage() {
                             <Link key={post._id} href={`posts/${post.slug}`} className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition" >
                                 {
                                     post.coverImage && (
-                                        <Image src={post.coverImage} alt={post.title} className="w-full h-48 object-cover" />
+                                        <img src={post.coverImage} alt={post.title} className="w-full h-48 object-cover" />
                                     )
                                 }
 

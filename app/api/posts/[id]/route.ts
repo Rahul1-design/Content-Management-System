@@ -3,10 +3,12 @@ import { connectToDatabase } from '@/lib/db';
 import Post from '@/models/Post';
 import { getServerSession } from 'next-auth';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectToDatabase();
-    const post = await Post.findById(params.id).populate('author', 'name email');
+
+    const { id } = await params;
+    const post = await Post.findById(id).populate('author', 'name email');
     if (!post) {
       return Response.json({ error: 'Not Found' }, { status: 404 });
     }
@@ -16,7 +18,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -24,7 +26,8 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 
     await connectToDatabase();
-    const post = await Post.findById(params.id);
+    const { id } = await params;
+    const post = await Post.findById(id);
 
     if (!post) {
       return Response.json({ error: 'Not found' }, { status: 404 });
@@ -35,7 +38,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 
     const body = await request.json();
-    const updatedPost = await Post.findByIdAndUpdate(params.id, body, { new: true });
+    const updatedPost = await Post.findByIdAndUpdate(id, body, { new: true });
 
     return Response.json({ success: true, post: updatedPost }, { status: 201 });
   } catch (error) {
@@ -43,7 +46,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -51,7 +54,8 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     }
 
     await connectToDatabase();
-    const post = await Post.findById(params.id);
+    const { id } = await params;
+    const post = await Post.findById(id);
     if (!post) {
       return Response.json({ error: 'Not found' }, { status: 404 });
     }
@@ -60,7 +64,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    await Post.findByIdAndDelete(params.id);
+    await Post.findByIdAndDelete(id);
 
     return Response.json({ success: true }, { status: 201 });
   } catch (error) {

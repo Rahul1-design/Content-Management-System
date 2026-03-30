@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
 async function getLatestPosts() {
@@ -42,7 +41,7 @@ export default async function Home() {
           >
             <div className="md:flex">
               {featuredPost.coverImage && (
-                <Image
+                <img
                   src={featuredPost.coverImage}
                   alt={featuredPost.title}
                   className="w-full md:w-1/2 h-64 md:h-auto object-cover"
@@ -86,7 +85,7 @@ export default async function Home() {
               className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition"
             >
               {post.coverImage && (
-                <Image
+                <img
                   src={post.coverImage}
                   alt={post.title}
                   className="w-full h-48 object-cover"

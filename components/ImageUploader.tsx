@@ -1,7 +1,6 @@
 "use client"
 import { useState } from 'react'
 import { Upload, X } from 'lucide-react'
-import Image from 'next/image'
 
 export interface ImageUploaderProps {
     onUpload: (url: string) => void,
@@ -59,7 +58,7 @@ export default function ImageUploader({ onUpload, currentImage }: ImageUploaderP
         <div>
             {preview ? (
                 <div className="relative">
-                    <Image src={preview} alt="Preview" className='w-full h-64 object-cover rounded-lg' />
+                    <img src={preview} alt="Preview" className='w-full h-64 object-cover rounded-lg' />
                     <button title='X' type='button' onClick={handleRemove} className="absolute top-2 right-2 bg-red-200 text-white p-2 rounded-full hover:bg-red-700">
                         <X className='w-4 h-4' />
                     </button>

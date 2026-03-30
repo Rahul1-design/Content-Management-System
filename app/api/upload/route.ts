@@ -5,7 +5,7 @@ import { NextRequest } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const session = getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
 
     if (!session) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const base64 = buffer.toString('base64');
-    const dataURI = `data:${file.type}; base64, ${base64}`;
+    const dataURI = `data:${file.type};base64,${base64}`;
 
     // Upload to cloudinary
     const result = await cloudinary.uploader.upload(dataURI, {
