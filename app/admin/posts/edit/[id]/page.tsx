@@ -5,9 +5,11 @@
 import RichTextEditor from "@/components/RichTextEditor"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 
-export default function EditPost({ params }: { params: { id: string } }) {
+export default function EditPost({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params)
+
     const router = useRouter();
     const { data: session } = useSession();
     const [formData, setFormData] = useState({
@@ -35,7 +37,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
 
     const fetchPost = async () => {
         try {
-            const res = await fetch(`/api/posts/${params.id}`)
+            const res = await fetch(`/api/posts/${id}`)
             const data = await res.json();
 
             if (data.success) {
@@ -62,7 +64,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
         setError('')
 
         try {
-            const res = await fetch(`/api/posts/${params.id}`, {
+            const res = await fetch(`/api/posts/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...formData, tags: formData.tags.split(',').map(e => e.trim()).filter(Boolean) })
@@ -90,7 +92,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
         setDeleting(true)
 
         try {
-            const res = await fetch(`/api/posts/${params.id}`, {
+            const res = await fetch(`/api/posts/${id}`, {
                 method: 'DELETE'
             })
 

@@ -18,8 +18,10 @@ async function getPost(slug: string) {
 //     tags?: string[]
 // }
 
-export default async function PostPage({ params }: { params: { slug: string } }) {
-    const post = await getPost(params.slug)
+export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+
+    const post = await getPost(slug)
 
     if (!post) {
         notFound();
@@ -39,7 +41,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             {/* Cover Image */}
             {post.coverImage && (
                 <div className="mb-8 -mx-8">
-                    <img src={post.coverImage} alt="post.title" className="w-full h-96 object-cover" />
+                    <img src={post.coverImage} alt={post.title} className="w-full h-96 object-cover" />
                 </div>
             )}
 

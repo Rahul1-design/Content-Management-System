@@ -1,3 +1,6 @@
+import { authOptions } from '@/lib/auth'
+import { getServerSession } from 'next-auth'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 async function getLatestPosts() {
@@ -9,6 +12,7 @@ async function getLatestPosts() {
 }
 
 export default async function Home() {
+  const session = await getServerSession(authOptions);
   const posts = await getLatestPosts()
   const featuredPost = posts[0]
   const otherPosts = posts.slice(1)
@@ -120,20 +124,22 @@ export default async function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gray-100 py-16">
-        <div className="max-w-4xl mx-auto px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Start Writing Today</h2>
-          <p className="text-gray-600 mb-8">
-            Join our community of writers and share your stories with the world
-          </p>
-          <Link
-            href="/auth/signup"
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 inline-block transition"
-          >
-            Create Account
-          </Link>
-        </div>
-      </section>
+      {!session &&
+        <section className="bg-gray-100 py-16">
+          <div className="max-w-4xl mx-auto px-8 text-center">
+            <h2 className="text-3xl font-bold mb-4">Start Writing Today</h2>
+            <p className="text-gray-600 mb-8">
+              Join our community of writers and share your stories with the world
+            </p>
+            <Link
+              href="/auth/signup"
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 inline-block transition"
+            >
+              Create Account
+            </Link>
+          </div>
+        </section>
+      }
     </div>
   )
 }
